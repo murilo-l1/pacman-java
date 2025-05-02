@@ -6,11 +6,14 @@ import java.util.HashSet;
  */
 public class PacMan extends Block {
 
-    //ícones do pacman
+    // Ícones do pacman
     private final Image pacmanUp;
     private final Image pacmanDown;
     private final Image pacmanRight;
     private final Image pacmanLeft;
+
+    // Nova variável para armazenar a direção desejada
+    private char nextDirection = ' '; // Nenhuma direção por padrão
 
     public PacMan(final int x, final int y, final int size, final int moveSpeed,
                   final Image up, final Image down, final Image right, final Image left) {
@@ -24,11 +27,8 @@ public class PacMan extends Block {
 
     @Override
     public void updateDirection(char direction) {
-        char prevDirection = this.direction;
-
-        this.direction = direction;
-        updateVelocity();
-        updateImage();
+        // Agora só guardamos a direção desejada para aplicar depois
+        this.nextDirection = direction;
     }
 
     public void updateImage() {
@@ -44,17 +44,57 @@ public class PacMan extends Block {
     }
 
     public boolean move(HashSet<Block> walls) {
+        // Tentamos mudar para a direção desejada (se não for a mesma e for possível)
+        if (nextDirection != direction && canMove(nextDirection, walls)) {
+            direction = nextDirection;      // aplicamos a nova direção
+            updateVelocity();               // atualizamos a velocidade para a nova direção
+            updateImage();                  // atualizamos a imagem do Pac-Man
+        }
+
+        // Move na direção atual
         x += velocityX;
         y += velocityY;
 
+        // Verifica se bateu numa parede
         for (final Block wall : walls) {
             if (collision(wall)) {
+                // desfaz o movimento
                 x -= velocityX;
                 y -= velocityY;
                 return false;
             }
         }
         return true;
+    }
+
+    // Verifica se é possível se mover na direção informada sem colidir
+    private boolean canMove(char direction, HashSet<Block> walls) {
+        // Fazemos um "teste" de movimento (não move de verdade)
+        int testX = x;
+        int testY = y;
+
+        if (direction == 'U') {
+            testY -= moveSpeed;
+        } else if (direction == 'D') {
+            testY += moveSpeed;
+        } else if (direction == 'L') {
+            testX -= moveSpeed;
+        } else if (direction == 'R') {
+            testX += moveSpeed;
+        } else {
+            return false; // direção inválida
+        }
+
+        // Verifica se esse novo ponto colidiria com alguma parede
+        for (final Block wall : walls) {
+            if (testX < wall.getX() + wall.getWidth() &&
+                    testX + width > wall.getX() &&
+                    testY < wall.getY() + wall.getHeight() &&
+                    testY + height > wall.getY()) {
+                return false; // bateu numa parede -> não pode mover
+            }
+        }
+        return true; // está livre -> pode mover
     }
 
     public boolean collision(Block other) {
@@ -64,7 +104,7 @@ public class PacMan extends Block {
                 y + height > other.getY();
     }
 
-    // quando o pacman colide com uma comida, removemos ela do hashset para nao ser renderizada no prox frame
+    // Quando o pacman colide com uma comida, removemos ela do hashset para não ser renderizada no próximo frame
     public boolean eatFood(HashSet<Block> foods) {
         Block foodEaten = null;
         for (final Block food : foods) {

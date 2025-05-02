@@ -8,6 +8,8 @@ public class GameStateManager {
     private int lives;
     private boolean gameOver;
     private Level currentLevel;
+    // Tempo (em milissegundos) durante o qual o Pac-Man está invulnerável após perder uma vida
+    private long invulnerableUntil = 0;
 
     public GameStateManager() {
         this.score = 0;
@@ -20,13 +22,27 @@ public class GameStateManager {
         score = 0;
         lives = 3;
         gameOver = false;
+        invulnerableUntil = 0; // Zera o tempo de invulnerabilidade ao resetar o jogo
     }
 
     public boolean isGameOver() {
         return gameOver;
     }
 
+    /*public void checkCollisions(PacMan pacman, HashSet<Ghost> ghosts) {
+        for (Ghost ghost : ghosts) {
+            if (pacman.collision(ghost)) {
+                loseLife();
+                return;
+            }
+        }
+    }*/
     public void checkCollisions(PacMan pacman, HashSet<Ghost> ghosts) {
+        // Se ainda está invulnerável, não checa colisão
+        if (System.currentTimeMillis() < invulnerableUntil) {
+            return;
+        }
+
         for (Ghost ghost : ghosts) {
             if (pacman.collision(ghost)) {
                 loseLife();
@@ -35,12 +51,26 @@ public class GameStateManager {
         }
     }
 
-    public void loseLife() {
+    /*public void loseLife() {
         lives--;
         if (lives <= 0) {
             gameOver = true;
         }
+    }*/
+    public void loseLife() {
+        if (gameOver) {
+            return;  // Se já está em game over, não faz mais nada
+        }
+
+        lives--;
+        if (lives <= 0) {
+            lives = 0;  // Protege para não ficar negativo
+            gameOver = true;
+        } else {
+            invulnerableUntil = System.currentTimeMillis() + 2000;
+        }
     }
+
 
     public boolean eatFood(PacMan pacman, HashSet<Block> foods) {
         boolean eaten = pacman.eatFood(foods);
@@ -106,3 +136,4 @@ public class GameStateManager {
         }
     }
 }
+
