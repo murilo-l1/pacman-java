@@ -64,6 +64,15 @@ public class PacMan extends Block {
                 return false;
             }
         }
+
+        if (x + width < 0) {
+            // Saiu totalmente pela esquerda → teleporta para a direita
+            x = 608;
+        } else if (x > 608) {
+            // Saiu totalmente pela direita → teleporta para a esquerda
+            x = -width;
+        }
+
         return true;
     }
 
