@@ -57,7 +57,6 @@ public class GameStateManager {
         }
     }
 
-
     public boolean eatFood(PacMan pacman, HashSet<Block> foods) {
         boolean eaten = pacman.eatFood(foods);
         if (eaten) {
@@ -82,13 +81,16 @@ public class GameStateManager {
         return currentLevel;
     }
 
-    /**
-     * Static class that represents boards layouts, changes by level the player's in
-     */
     public static class Level {
+        private final String[][] boards = new String[][]{
+                board1, board2, board3
+        };
+        private int currentIndex = 0;
+
+
         //X = wall, O = skip, P = pac man, ' ' = food
         //Ghosts: b = blue, o = orange, p = pink, r = red
-        private String[] board = {
+        private static final String[] board1 = {
                 "XXXXXXXXXXXXXXXXXXX",
                 "X        X        X",
                 "X XX XXX X XXX XX X",
@@ -112,9 +114,70 @@ public class GameStateManager {
                 "XXXXXXXXXXXXXXXXXXX"
         };
 
+        private static final String[] board2 = {
+                "XXXXXXXXXXXXXXXXXXX",
+                "X   X   X   X     X",
+                "X X X XXX X XXX X X",
+                "X X             X X",
+                "X X XXX XXX XXX X X",
+                "X X   X     X   X X",
+                "XXX X XXXXXXX X XXX",
+                "OOO X         X OOO",
+                "XXX X XXrXX X X XXX",
+                "O   X   bpo   X   O",
+                "XXX X XXXXX X X XXX",
+                "OOO X       X X OOO",
+                "XXX XXXXXXX XXX X X",
+                "X   X   X   X   X X",
+                "X X XXX X XXX X X X",
+                "X X   X   P   X X X",
+                "X XXXXX XXXXXXX X X",
+                "X     X   X     X X",
+                "X XXXXX X XXXXXXX X",
+                "X                 X",
+                "XXXXXXXXXXXXXXXXXXX"
+        };
+
+        private static final String[] board3 = {
+                "XXXXXXXXXXXXXXXXXXX",
+                "X        X        X",
+                "X XXXX X X X XXXX X",
+                "X                 X",
+                "X XX X XXXXX X XX X",
+                "X    X   X   X    X",
+                "XXXX X XXXXX X XXXX",
+                "OOOX X       X XOOO",
+                "XXXX X XXrXX X XXXX",
+                "O    b   p o      O",
+                "XXXX X XXXXX X XXXX",
+                "OOOX X       X XOOO",
+                "XXXX XXXXXXX X XXXX",
+                "X     X           X",
+                "X XXX X XXX X XXX X",
+                "X X   X  P  X   X X",
+                "X X X XXXXX X X X X",
+                "X   X   X   X   X X",
+                "X XXXXX X XXXXXXX X",
+                "X                 X",
+                "XXXXXXXXXXXXXXXXXXX"
+        };
+
+        public void next() {
+            if (currentIndex < boards.length - 1) {
+                currentIndex++;
+            }
+            else {
+                currentIndex = 0;
+            }
+        }
+
         public String[] getBoard() {
-            return board;
+            return boards[currentIndex];
+        }
+
+        public int currentIndex() {
+            return currentIndex;
         }
     }
-}
 
+}

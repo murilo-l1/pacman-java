@@ -30,7 +30,7 @@ public class BoardLoader {
     }
 
     private void loadImages() {
-        wallImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/wall.png"))).getImage();
+        wallImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/wall2.png"))).getImage();
 
         blueGhostImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/blueGhost.png"))).getImage();
         orangeGhostImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/orangeGhost.png"))).getImage();
