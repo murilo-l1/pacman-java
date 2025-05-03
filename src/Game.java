@@ -62,63 +62,25 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         windowManager.render(g, pacman, ghosts, walls, foods, gameStateManager);
     }
 
-    /*private void updateGame() {
-        // Skip update if game is over
+    private void updateGame() {
         if (gameStateManager.isGameOver()) {
             return;
         }
 
-        // Move pacman
         pacman.move(walls);
 
-        // Check for ghost collisions
+        int previousLives = gameStateManager.getLives();  // Guarda as vidas antes de checar colisão
+
         gameStateManager.checkCollisions(pacman, ghosts);
+
         if (gameStateManager.isGameOver()) {
             return;
         }
 
-        // Move ghosts
-        for (Ghost ghost : ghosts) {
-            ghost.move(walls, columns * tileSize, pacman, tileSize);
-        }
-
-        // Eat food and update score
-        gameStateManager.eatFood(pacman, foods);
-
-        // Check if level is complete
-        if (gameStateManager.isLevelComplete(foods)) {
-            gameStateManager.setNextLevel();
-            loadBoard();
+        // Se perdeu uma vida e ainda não é game over
+        if (gameStateManager.getLives() < previousLives && !gameStateManager.isGameOver()) {
             boardLoader.resetPositions();
         }
-    }*/
-    private void updateGame() {
-        // Skip update if game is over
-        if (gameStateManager.isGameOver()) {
-            return;
-        }
-
-        // Move pacman
-        pacman.move(walls);
-
-        // Check for ghost collisions
-        int previousLives = gameStateManager.getLives();  // Guarda as vidas antes de checar colisão
-        System.out.println("Antes da colisão: vidas = " + previousLives);
-
-        gameStateManager.checkCollisions(pacman, ghosts);
-
-        // 🚨 Adicione este println aqui para ver o que aconteceu depois da colisão:
-        System.out.println("Depois da colisão: vidas = " + gameStateManager.getLives() +
-                " | Game Over? " + gameStateManager.isGameOver());
-
-        if (gameStateManager.isGameOver()) {
-            return;
-        }
-
-        // Se perdeu uma vida (vidas diminuíram) e ainda não é game over
-        if (gameStateManager.getLives() < previousLives && !gameStateManager.isGameOver()) {
-            boardLoader.resetPositions();  // Reseta posições dos fantasmas e do Pac-Man
-        }
 
         // Move ghosts
         for (Ghost ghost : ghosts) {
@@ -128,9 +90,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         // Eat food and update score
         gameStateManager.eatFood(pacman, foods);
 
-        // Check if level is complete
         if (gameStateManager.isLevelComplete(foods)) {
-            gameStateManager.setNextLevel();
             loadBoard();
             boardLoader.resetPositions();
         }
@@ -168,11 +128,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // Reset game with R key
-        /*if (gameStateManager.isGameOver() || e.getKeyCode() == KeyEvent.VK_R) {
-            resetGame();
-            return;
-        }*/
         if (e.getKeyCode() == KeyEvent.VK_R && gameStateManager.isGameOver()) {
             resetGame();
             return;
