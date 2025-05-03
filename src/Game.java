@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Main game class that manages the game loop and user input
@@ -14,9 +15,12 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     private final int rows = 21;
     private final int tileSize = 32;
 
-    private final BoardLoader boardLoader;
+    private boolean levelSelected = false;
+    private LevelType selectedLevel = null;
+
+    private BoardLoader boardLoader;
     private final WindowManager windowManager;
-    private final GameStateManager gameStateManager;
+    private GameStateManager gameStateManager;
 
     private HashSet<Block> walls;
     private HashSet<Block> foods;
@@ -27,9 +31,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     public Game() {
         // Initialize managers
-        boardLoader = new BoardLoader(tileSize);
         windowManager = new WindowManager(columns, rows, tileSize, this);
-        gameStateManager = new GameStateManager();
 
         // Set up panel
         setPreferredSize(windowManager.getPanelDimension());
@@ -37,12 +39,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
         setFocusable(true);
 
-        // Load initial board and entities
-        loadBoard();
-
         // Start game loop
         gameLoop = new Timer(50, this); // 20 FPS
-        gameLoop.start();
     }
 
     private void loadBoard() {
@@ -58,8 +56,13 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        windowManager.render(g, pacman, ghosts, walls, foods, gameStateManager);
+        if (levelSelected) {
+            super.paintComponent(g);
+            windowManager.render(g, pacman, ghosts, walls, foods, gameStateManager);
+        }
+        else {
+            windowManager.drawSelectionPanel(g);
+        }
     }
 
     private void updateGame() {
@@ -97,6 +100,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     }
 
 
+
     private void resetGame() {
         loadBoard();
         boardLoader.resetPositions();
@@ -123,8 +127,26 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // Not used
+        if (!levelSelected) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_1 -> selectedLevel = LevelType.LEVEL_1;
+                case KeyEvent.VK_2 -> selectedLevel = LevelType.LEVEL_2;
+                case KeyEvent.VK_3 -> selectedLevel = LevelType.LEVEL_3;
+            }
+
+            if (selectedLevel != null) {
+                levelSelected = true;
+
+                gameStateManager = new GameStateManager(selectedLevel);
+                boardLoader = new BoardLoader(tileSize, selectedLevel.getWallAsset());
+
+                loadBoard();
+
+                gameLoop.start();
+            }
+        }
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {

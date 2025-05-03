@@ -24,14 +24,13 @@ public class BoardLoader {
     private HashSet<Ghost> ghosts;
     private PacMan pacman;
 
-    public BoardLoader(int tileSize) {
+    public BoardLoader(int tileSize, String wallAssetPath) {
         this.tileSize = tileSize;
+        this.wallImage = new ImageIcon(Objects.requireNonNull(getClass().getResource(wallAssetPath))).getImage();
         loadImages();
     }
 
     private void loadImages() {
-        wallImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/wall2.png"))).getImage();
-
         blueGhostImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/blueGhost.png"))).getImage();
         orangeGhostImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/orangeGhost.png"))).getImage();
         redGhostImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/redGhost.png"))).getImage();
@@ -43,7 +42,7 @@ public class BoardLoader {
         pacmanLeftImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/pacmanLeft.png"))).getImage();
     }
 
-    public void loadBoard(GameStateManager.Level level) {
+    public void loadBoard(LevelType level) {
         String[] board = level.getBoard();
         walls = new HashSet<>();
         foods = new HashSet<>();

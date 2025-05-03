@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Handles rendering and window-related operations
@@ -29,6 +30,42 @@ public class WindowManager {
         window.pack();
         gamePanel.requestFocus();
         window.setVisible(true);
+    }
+
+    public void drawSelectionPanel(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(new Font("Roboto", Font.BOLD, 22));
+
+        String title = "Selecione o nível:";
+        int rectWidth = 300;
+        int rectHeight = 100;
+        int centerX = (getWidth() - rectWidth) / 2;
+        int upperCenterY = 80;
+
+        // Retângulo principal com borda decorada
+        g2d.setColor(new Color(30, 70, 30));
+        g2d.fillRoundRect(centerX, upperCenterY, rectWidth, rectHeight, 20, 20);
+
+        // Texto do título
+        g2d.setColor(Color.WHITE);
+        FontMetrics fm = g2d.getFontMetrics();
+        int titleWidth = fm.stringWidth(title);
+        g2d.drawString(title, centerX + (rectWidth - titleWidth) / 2, upperCenterY + 30);
+
+        // Opções horizontalmente alinhadas
+        String[] options = {"1 - Fácil", "2 - Médio", "3 - Difícil"};
+        int spacing = rectWidth / options.length;
+
+        for (int i = 0; i < options.length; i++) {
+            String option = options[i];
+            int textWidth = fm.stringWidth(option);
+            int x = centerX + i * spacing + (spacing - textWidth) / 2;
+            int y = upperCenterY + 70;
+            g2d.drawString(option, x, y);
+        }
+
+        g2d.drawImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("./assets/pacmanUp.png"))).getImage(), centerX,  rows * tileSize /2, 300, 300, null);
     }
 
     public void render(Graphics g, PacMan pacman, HashSet<Ghost> ghosts,

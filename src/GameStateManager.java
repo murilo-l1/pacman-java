@@ -7,15 +7,15 @@ public class GameStateManager {
     private int score;
     private int lives;
     private boolean gameOver;
-    private Level currentLevel;
+    private final LevelType currentLevel;
 
     private long invulnerableUntil = 0;
 
-    public GameStateManager() {
+    public GameStateManager(LevelType level) {
         this.score = 0;
-        this.lives = 3;
+        this.lives = level.getLives();
         this.gameOver = false;
-        this.currentLevel = new Level();
+        this.currentLevel = level;
     }
 
     public void reset() {
@@ -77,107 +77,8 @@ public class GameStateManager {
         return lives;
     }
 
-    public Level getCurrentLevel() {
+    public LevelType getCurrentLevel() {
         return currentLevel;
-    }
-
-    public static class Level {
-        private final String[][] boards = new String[][]{
-                board1, board2, board3
-        };
-        private int currentIndex = 0;
-
-
-        //X = wall, O = skip, P = pac man, ' ' = food
-        //Ghosts: b = blue, o = orange, p = pink, r = red
-        private static final String[] board1 = {
-                "XXXXXXXXXXXXXXXXXXX",
-                "X        X        X",
-                "X XX XXX X XXX XX X",
-                "X                 X",
-                "X XX X XXXXX X XX X",
-                "X    X       X    X",
-                "XXXX XXXX XXXX XXXX",
-                "OOOX X       X XOOO",
-                "XXXX X XXrXX X XXXX",
-                "O       bpo        ",
-                "XXXX X XXXXX X XXXX",
-                "OOOX X       X XOOO",
-                "XXXX X XXXXX X XXXX",
-                "X        X        X",
-                "X XX XXX X XXX XX X",
-                "X  X   X  P  X   X  X",
-                "XX X X XXXXX X X XX",
-                "X    X   X   X    X",
-                "X XXXXXX X XXXXXX X",
-                "X                 X",
-                "XXXXXXXXXXXXXXXXXXX"
-        };
-
-        private static final String[] board2 = {
-                "XXXXXXXXXXXXXXXXXXX",
-                "X   X   X   X     X",
-                "X X X XXX X XXX X X",
-                "X X             X X",
-                "X X XXX XXX XXX X X",
-                "X X   X     X   X X",
-                "XXX X XXXXXXX X XXX",
-                "OOO X         X OOO",
-                "XXX X XXrXX X X XXX",
-                "O   X   bpo   X   O",
-                "XXX X XXXXX X X XXX",
-                "OOO X       X X OOO",
-                "XXX XXXXXXX XXX X X",
-                "X   X   X   X   X X",
-                "X X XXX X XXX X X X",
-                "X X   X   P   X X X",
-                "X XXXXX XXXXXXX X X",
-                "X     X   X     X X",
-                "X XXXXX X XXXXXXX X",
-                "X                 X",
-                "XXXXXXXXXXXXXXXXXXX"
-        };
-
-        private static final String[] board3 = {
-                "XXXXXXXXXXXXXXXXXXX",
-                "X        X        X",
-                "X XXXX X X X XXXX X",
-                "X                 X",
-                "X XX X XXXXX X XX X",
-                "X    X   X   X    X",
-                "XXXX X XXXXX X XXXX",
-                "OOOX X       X XOOO",
-                "XXXX X XXrXX X XXXX",
-                "O    b   p o      O",
-                "XXXX X XXXXX X XXXX",
-                "OOOX X       X XOOO",
-                "XXXX XXXXXXX X XXXX",
-                "X     X           X",
-                "X XXX X XXX X XXX X",
-                "X X   X  P  X   X X",
-                "X X X XXXXX X X X X",
-                "X   X   X   X   X X",
-                "X XXXXX X XXXXXXX X",
-                "X                 X",
-                "XXXXXXXXXXXXXXXXXXX"
-        };
-
-        public void next() {
-            if (currentIndex < boards.length - 1) {
-                currentIndex++;
-            }
-            else {
-                currentIndex = 0;
-            }
-        }
-
-        public String[] getBoard() {
-            return boards[currentIndex];
-        }
-
-        public int currentIndex() {
-            return currentIndex;
-        }
     }
 
 }
