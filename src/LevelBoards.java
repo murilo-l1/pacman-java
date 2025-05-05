@@ -18,7 +18,7 @@ public final class LevelBoards {
             "XXXX X XXXXX X XXXX",
             "X        X        X",
             "X XX XXX X XXX XX X",
-            "X  X   X  P  X   X  X",
+            "X  X   X  P  X    X",
             "XX X X XXXXX X X XX",
             "X    X   X   X    X",
             "X XXXXXX X XXXXXX X",
