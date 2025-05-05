@@ -26,7 +26,7 @@ public class Ghost extends Block {
         updateVelocity();
     }
 
-    public void move(HashSet<Block> walls, int maxX, PacMan pacman, int tileSize) {
+    /*public void move(HashSet<Block> walls, int maxX, PacMan pacman, int tileSize) {
         // Caso fantasma preso na linha 9, tem que ser corrigido com lógica correspondente nessa row.
         if (y == tileSize * 9 && direction != 'U' && direction != 'D') {
             updateDirection('U');
@@ -51,6 +51,54 @@ public class Ghost extends Block {
         if (collided || random.nextInt(20) == 0) {
             char newDirection = searchStrategy.nextDirection(this, pacman, walls);
             updateDirection(newDirection);
+        }
+    }*/
+
+    public void move(HashSet<Block> walls, int maxX, PacMan pacman, int tileSize) {
+
+        if (searchStrategy instanceof BFSStrategy) {
+            // 👇 Só muda de direção se estiver alinhado na grid (evita travamento em viradas)
+            if (x % tileSize == 0 && y % tileSize == 0) {
+                char newDirection = searchStrategy.nextDirection(this, pacman, walls);
+                updateDirection(newDirection);
+            }
+        }/* else {
+            // 👇 Mantém o comportamento ORIGINAL para os outros fantasmas
+            // Move o fantasma com as velocidades atuais
+            x += velocityX;
+            y += velocityY;
+
+            boolean collided = false;
+            for (Block wall : walls) {
+                if (collision(wall) || x <= 0 || x + width >= maxX) {
+                    x -= velocityX;
+                    y -= velocityY;
+                    collided = true;
+                    break;
+                }
+            }
+
+            if (collided || random.nextInt(20) == 0) {
+                char newDirection = searchStrategy.nextDirection(this, pacman, walls);
+                updateDirection(newDirection);
+            }
+
+            return;  // encerra para não executar novamente o movimento
+        }*/
+
+        // 👇 Move (o azul) após decidir nova direção
+        x += velocityX;
+        y += velocityY;
+
+        // Checa colisões normalmente
+        boolean collided = false;
+        for (Block wall : walls) {
+            if (collision(wall) || x <= 0 || x + width >= maxX) {
+                x -= velocityX;
+                y -= velocityY;
+                collided = true;
+                break;
+            }
         }
     }
 

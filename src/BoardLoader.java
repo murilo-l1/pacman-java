@@ -67,21 +67,25 @@ public class BoardLoader {
                     case 'b':
                         Ghost blueGhost = new Ghost(x, y, tileSize, tileSize / 4, blueGhostImage);
                         blueGhost.updateDirection('U'); // Initial direction
+                        blueGhost.setSearchStrategy(new BFSStrategy(tileSize));
                         ghosts.add(blueGhost);
                         break;
                     case 'p':
                         Ghost pinkGhost = new Ghost(x, y, tileSize, tileSize / 4, pinkGhostImage);
                         pinkGhost.updateDirection('U'); // Initial direction
+                        pinkGhost.setSearchStrategy(new BFSStrategy(tileSize));
                         ghosts.add(pinkGhost);
                         break;
                     case 'o':
                         Ghost orangeGhost = new Ghost(x, y, tileSize, tileSize / 4, orangeGhostImage);
                         orangeGhost.updateDirection('U'); // Initial direction
+                        orangeGhost.setSearchStrategy(new BFSStrategy(tileSize));
                         ghosts.add(orangeGhost);
                         break;
                     case 'r':
                         Ghost redGhost = new Ghost(x, y, tileSize, tileSize / 4, redGhostImage);
                         redGhost.updateDirection('U'); // Initial direction
+                        redGhost.setSearchStrategy(new BFSStrategy(tileSize));
                         ghosts.add(redGhost);
                         break;
                     case 'P':
