@@ -27,16 +27,42 @@ public class Ghost extends Block {
     }
 
     public void move(HashSet<Block> walls, int maxX, PacMan pacman, int tileSize) {
-        // Caso fantasma preso na linha 9, tem que ser corrigido com lógica correspondente nessa row.
-        if (y == tileSize * 9 && direction != 'U' && direction != 'D') {
-            updateDirection('U');
-        }
 
-        // Move the ghost using current velocities
+        if (searchStrategy instanceof AStarSearchStrategy) {
+            // Só muda de direção se estiver alinhado na grid
+            if (x % tileSize == 0 && y % tileSize == 0) {
+                char newDirection = searchStrategy.nextDirection(this, pacman, walls);
+                updateDirection(newDirection);
+            }
+        }/* else {
+            // 👇 Mantém o comportamento ORIGINAL para os outros fantasmas
+            // Move o fantasma com as velocidades atuais
+            x += velocityX;
+            y += velocityY;
+
+            boolean collided = false;
+            for (Block wall : walls) {
+                if (collision(wall) || x <= 0 || x + width >= maxX) {
+                    x -= velocityX;
+                    y -= velocityY;
+                    collided = true;
+                    break;
+                }
+            }
+
+            if (collided || random.nextInt(20) == 0) {
+                char newDirection = searchStrategy.nextDirection(this, pacman, walls);
+                updateDirection(newDirection);
+            }
+
+            return;  // encerra para não executar novamente o movimento
+        }*/
+
+        // 👇 Move (o azul) após decidir nova direção
         x += velocityX;
         y += velocityY;
 
-        // Check for collisions with walls or boundaries
+        // Checa colisões normalmente
         boolean collided = false;
         for (Block wall : walls) {
             if (collision(wall) || x <= 0 || x + width >= maxX) {
@@ -45,12 +71,6 @@ public class Ghost extends Block {
                 collided = true;
                 break;
             }
-        }
-
-        // If there was a collision it's time to change direction
-        if (collided || random.nextInt(20) == 0) {
-            char newDirection = searchStrategy.nextDirection(this, pacman, walls);
-            updateDirection(newDirection);
         }
     }
 

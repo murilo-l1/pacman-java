@@ -52,6 +52,14 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         foods = boardLoader.getFoods();
         ghosts = boardLoader.getGhosts();
         pacman = boardLoader.getPacman();
+
+        // Configurar estratégias para os fantasmas
+        AStarSearchStrategy aStarStrategy = new AStarSearchStrategy(tileSize, columns, rows);
+
+        // Faça o fantasma vermelho perseguir o pacman usando A*
+        /*for (Ghost ghost : ghosts) {
+            ghost.setSearchStrategy(aStarStrategy);
+        }*/
     }
 
     @Override

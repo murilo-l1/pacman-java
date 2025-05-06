@@ -66,21 +66,25 @@ public class BoardLoader {
                     case 'b':
                         Ghost blueGhost = new Ghost(x, y, tileSize, tileSize / 4, blueGhostImage);
                         blueGhost.updateDirection('U'); // Initial direction
+                        blueGhost.setSearchStrategy(new RandomMovementStrategy());
                         ghosts.add(blueGhost);
                         break;
                     case 'p':
                         Ghost pinkGhost = new Ghost(x, y, tileSize, tileSize / 4, pinkGhostImage);
                         pinkGhost.updateDirection('U'); // Initial direction
+                        pinkGhost.setSearchStrategy(new RandomMovementStrategy());
                         ghosts.add(pinkGhost);
                         break;
                     case 'o':
                         Ghost orangeGhost = new Ghost(x, y, tileSize, tileSize / 4, orangeGhostImage);
                         orangeGhost.updateDirection('U'); // Initial direction
+                        orangeGhost.setSearchStrategy(new RandomMovementStrategy());
                         ghosts.add(orangeGhost);
                         break;
                     case 'r':
                         Ghost redGhost = new Ghost(x, y, tileSize, tileSize / 4, redGhostImage);
                         redGhost.updateDirection('U'); // Initial direction
+                        redGhost.setSearchStrategy(new AStarSearchStrategy(tileSize, 19, 21));
                         ghosts.add(redGhost);
                         break;
                     case 'P':
@@ -96,10 +100,30 @@ public class BoardLoader {
             }
         }
 
-        // Initialize random directions for ghosts
+        /*// Initialize random directions for ghosts
         for (Ghost ghost : ghosts) {
             char[] directions = {'U', 'D', 'L', 'R'};
             ghost.updateDirection(directions[random.nextInt(4)]);
+        }
+
+        //setGhostStrategies();*/
+    }
+
+    // vamo usar esse método para setar qual busca cada um dos fantasmas vai ter (assim a gente padroniza)
+    public void setGhostStrategies() {
+        // Cria a estratégia A* com as dimensões do tabuleiro
+        AStarSearchStrategy aStarStrategy = new AStarSearchStrategy(tileSize, 19, 21);
+
+        // Seleciona qual fantasma usará a estratégia A*
+        // Por exemplo, fazer o fantasma vermelho usar A* e os outros usarem movimento aleatório
+        for (Ghost ghost : ghosts) {
+            // Se for o fantasma vermelho (baseado na imagem)
+            if (ghost.getImage() == redGhostImage) {
+                ghost.setSearchStrategy(aStarStrategy);
+            } else {
+                // Os outros fantasmas continuam usando a estratégia aleatória
+                ghost.setSearchStrategy(new RandomMovementStrategy());
+            }
         }
     }
 
