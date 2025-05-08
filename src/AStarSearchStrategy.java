@@ -64,11 +64,11 @@ public class AStarSearchStrategy implements SearchStrategy {
     }
 
     private List<Node> findPath(int startX, int startY, int goalX, int goalY, boolean[][] occupiedCells) {
-        PriorityQueue<Node> openSet = new PriorityQueue<>();
-        Set<String> closedSet = new HashSet<>();
+        PriorityQueue<Node> openSet = new PriorityQueue<>(); //nós que devem ser analisados, ordenados pelo menor custo em f()
+        Set<String> closedSet = new HashSet<>(); //nós já visitados, para que só processe aquilo que não sabemos o custo dado por f()
         Map<String, Node> allNodes = new HashMap<>();
 
-        // Cria o nó inicial
+        // Cria o nó inicial (distancia 0 do fantasma ao nó sendo calculado, g() faz o calculo heuristico dad)
         Node startNode = new Node(startX, startY);
         startNode.g = 0;
         startNode.h = calculateHeuristic(startX, startY, goalX, goalY);
@@ -77,8 +77,9 @@ public class AStarSearchStrategy implements SearchStrategy {
         openSet.add(startNode);
         allNodes.put(startNode.getKey(), startNode);
 
+        //enquanto nao exploramos todos os caminhos até o pacman, continue processando os adjacentes
         while (!openSet.isEmpty()) {
-            Node current = openSet.poll();
+            Node current = openSet.poll(); //nó que vai ser processado é armazenado e sai da lista a serem visitados
 
             // Se chegou ao objetivo, reconstrói o caminho
             if (current.x == goalX && current.y == goalY) {
@@ -87,7 +88,7 @@ public class AStarSearchStrategy implements SearchStrategy {
 
             closedSet.add(current.getKey());
 
-            // Explora os vizinhos (cima, baixo, esquerda, direita)
+            // Explora os vizinhos do nó sendo processado (cima, baixo, dir, esq)
             int[][] directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
             for (int[] dir : directions) {
                 int newX = current.x + dir[0];
@@ -98,11 +99,12 @@ public class AStarSearchStrategy implements SearchStrategy {
                     continue;
                 }
 
-                // Verifica se a célula está ocupada (parede)
+                // Verifica se a célula é parede
                 if (occupiedCells[newX][newY]) {
                     continue;
                 }
 
+                //verifica se já foi visitado
                 String neighborKey = newX + "," + newY;
                 if (closedSet.contains(neighborKey)) {
                     continue;
@@ -142,26 +144,24 @@ public class AStarSearchStrategy implements SearchStrategy {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
-    /**
-     * Reconstrói o caminho do objetivo até o início
-     */
+
     private List<Node> reconstructPath(Node goal) {
         List<Node> path = new ArrayList<>();
         Node current = goal;
 
         while (current != null) {
-            path.add(0, current);
+            path.addFirst(current);
             current = current.parent;
         }
 
         return path;
     }
 
-    // classe de no ⇾ pontos cartesianos, funcoes g, h e f (g + h)
+    // classe de no ⇾ pontos cartesianos, funcoes g, h e f: (g + h)
     private static class Node implements Comparable<Node> {
         int x, y;
-        double g; // Custo do caminho do início até este nó
-        double h; // Heurística estimada deste nó até o objetivo
+        double g; // Distância do fantasma até o nó sendo processado
+        double h; // Distância do pacman até o nó sendo processado
         double f; // Função de avaliação f = g + h
         Node parent;
 

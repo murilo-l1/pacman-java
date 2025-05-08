@@ -33,7 +33,7 @@ public class GreedyStrategy implements SearchStrategy {
             // Checa se é parede
             if (isObstacle(newX, newY, obstacles)) continue;
 
-            // Calcula a distância de Manhattan (poderia ser Euclidiana também)
+            // Calcula a distância de Manhattan
             int distance = Math.abs(newX - targetX) + Math.abs(newY - targetY);
 
             if (distance < minDistance) {

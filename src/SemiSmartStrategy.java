@@ -41,10 +41,10 @@ public class SemiSmartStrategy implements SearchStrategy {
             return ghost.getDirection();
         }
 
-        // Decide: 70% guloso, 30% aleatório
+        // Decide: 50% guloso, 50% aleatorio
         if (random.nextDouble() < 0.5) {
             // 💡 Escolhe a direção que minimiza a distância para o Pac-Man
-            int[] bestMove = possibleMoves.get(0);
+            int[] bestMove = possibleMoves.getFirst();
             int bestDistance = distance(ghostX + bestMove[0], ghostY + bestMove[1], targetX, targetY);
 
             for (int[] move : possibleMoves) {
@@ -56,7 +56,7 @@ public class SemiSmartStrategy implements SearchStrategy {
             }
             return (char) bestMove[2];
         } else {
-            // 🤪 Escolhe aleatório entre os possíveis
+            // Escolhe aleatório entre os possíveis
             int[] randomMove = possibleMoves.get(random.nextInt(possibleMoves.size()));
             return (char) randomMove[2];
         }

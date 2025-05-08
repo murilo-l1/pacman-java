@@ -48,8 +48,6 @@ public class BoardLoader {
         foods = new HashSet<>();
         ghosts = new HashSet<>();
 
-        Random random = new Random();
-
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[r].length(); c++) {
                 String row = board[r];
@@ -100,31 +98,6 @@ public class BoardLoader {
             }
         }
 
-        /*// Initialize random directions for ghosts
-        for (Ghost ghost : ghosts) {
-            char[] directions = {'U', 'D', 'L', 'R'};
-            ghost.updateDirection(directions[random.nextInt(4)]);
-        }
-
-        //setGhostStrategies();*/
-    }
-
-    // vamo usar esse método para setar qual busca cada um dos fantasmas vai ter (assim a gente padroniza)
-    public void setGhostStrategies() {
-        // Cria a estratégia A* com as dimensões do tabuleiro
-        AStarSearchStrategy aStarStrategy = new AStarSearchStrategy(tileSize);
-
-        // Seleciona qual fantasma usará a estratégia A*
-        // Por exemplo, fazer o fantasma vermelho usar A* e os outros usarem movimento aleatório
-        for (Ghost ghost : ghosts) {
-            // Se for o fantasma vermelho (baseado na imagem)
-            if (ghost.getImage() == redGhostImage) {
-                ghost.setSearchStrategy(aStarStrategy);
-            } else {
-                // Os outros fantasmas continuam usando a estratégia aleatória
-                ghost.setSearchStrategy(new RandomMovementStrategy());
-            }
-        }
     }
 
     public HashSet<Block> getWalls() {

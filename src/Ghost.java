@@ -6,7 +6,6 @@ import java.util.Random;
  * Represents an enemy ghost that chases the player
  */
 public class Ghost extends Block {
-    private final Random random = new Random();
     private SearchStrategy searchStrategy;
 
     public Ghost(final int x, final int y, final int size, final int moveSpeed, final Image image) {
@@ -20,13 +19,11 @@ public class Ghost extends Block {
 
     @Override
     public void updateDirection(char direction) {
-        char prevDirection = this.direction;
-
         this.direction = direction;
         updateVelocity();
     }
 
-    public void move(HashSet<Block> walls, int maxX, PacMan pacman, int tileSize) {
+    public void move(HashSet<Block> walls, PacMan pacman, int tileSize) {
 
         // Só muda de direção se estiver alinhado na grid (evita travamento em viradas)
         if (x % tileSize == 0 && y % tileSize == 0) {
@@ -43,14 +40,6 @@ public class Ghost extends Block {
                 y -= velocityY;
                 break;
             }
-        }
-
-        if (x + width < 0) {
-            // Saiu totalmente pela esquerda → teleporta para a direita
-            x = 608;
-        } else if (x > 608) {
-            // Saiu totalmente pela direita → teleporta para a esquerda
-            x = -width;
         }
     }
 
