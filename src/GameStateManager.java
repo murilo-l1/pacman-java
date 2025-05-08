@@ -8,6 +8,7 @@ public class GameStateManager {
     private int lives;
     private boolean gameOver;
     private final LevelType currentLevel;
+    private boolean levelCompleted = false;
 
     private long invulnerableUntil = 0;
 
@@ -66,6 +67,7 @@ public class GameStateManager {
     }
 
     public boolean isLevelComplete(HashSet<Block> foods) {
+        levelCompleted = true;
         return foods.isEmpty();
     }
 
@@ -81,4 +83,7 @@ public class GameStateManager {
         return currentLevel;
     }
 
+    public boolean isLevelCompleted() {
+        return levelCompleted;
+    }
 }

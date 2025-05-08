@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
-import java.util.Objects;
 
 /**
  * Main game class that manages the game loop and user input
@@ -53,13 +52,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         ghosts = boardLoader.getGhosts();
         pacman = boardLoader.getPacman();
 
-        // Configurar estratégias para os fantasmas
-        AStarSearchStrategy aStarStrategy = new AStarSearchStrategy(tileSize, columns, rows);
-
-        // Faça o fantasma vermelho perseguir o pacman usando A*
-        /*for (Ghost ghost : ghosts) {
-            ghost.setSearchStrategy(aStarStrategy);
-        }*/
     }
 
     @Override
@@ -102,12 +94,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         gameStateManager.eatFood(pacman, foods);
 
         if (gameStateManager.isLevelComplete(foods)) {
+            JOptionPane.showMessageDialog(this, "PARABÉNS " + "seus pontos: " + gameStateManager.getScore());
             loadBoard();
             boardLoader.resetPositions();
         }
     }
-
-
 
     private void resetGame() {
         loadBoard();
@@ -153,6 +144,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 gameLoop.start();
             }
         }
+
+        //tecla mestra - cheat
+        if (e.getKeyCode() == KeyEvent.VK_7) {
+            foods.clear();
+        }
     }
 
 
@@ -163,7 +159,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             return;
         }
 
-        // Move pacman with arrow keys
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             pacman.updateDirection('U');
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -174,7 +169,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             pacman.updateDirection('L');
         }
 
-        // Update pacman's image based on direction
         pacman.updateImage();
     }
 }

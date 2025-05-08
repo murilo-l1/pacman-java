@@ -104,7 +104,9 @@ public class WindowManager {
 
         if (gameState.isGameOver()) {
             g.drawString("GAME OVER " + gameState.getScore(), tileSize/2, tileSize/2);
-        } else {
+            g.drawString("Pressione R para reiniciar", tileSize / 2, tileSize + 30);
+        }
+        else {
             g.drawString("x" + gameState.getLives() + " " + "SCORE: " + gameState.getScore(),
                     tileSize/2, tileSize/2);
         }

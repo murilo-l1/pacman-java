@@ -2,17 +2,15 @@ import java.util.*;
 
 public class AStarSearchStrategy implements SearchStrategy {
     private final int tileSize;
-    private final int columns;
-    private final int rows;
+    private final int columns = 19;
+    private final int rows = 21;
 
     private List<Node> lastPath; //ultimo caminho encontrado,
     private long lastPathCalculationTime;
     private static final long PATH_RECALCULATION_DELAY = 250; // Recalcula o caminho a cada 250ms, quanto menor, mais desgracado é
 
-    public AStarSearchStrategy(int tileSize, int columns, int rows) {
+    public AStarSearchStrategy(int tileSize) {
         this.tileSize = tileSize;
-        this.columns = columns;
-        this.rows = rows;
         this.lastPathCalculationTime = 0;
         this.lastPath = new ArrayList<>();
     }
