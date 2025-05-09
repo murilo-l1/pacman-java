@@ -1,8 +1,6 @@
 import java.util.HashSet;
 
-/**
- * Manages the game state including score, lives, and game over conditions
- */
+//Toma conta das vidas, pontucacao, caso de derrota
 public class GameStateManager {
     private int score;
     private int lives;
@@ -29,6 +27,7 @@ public class GameStateManager {
         return gameOver;
     }
 
+    //colisa fantasma e pacman: perde vida
     public void checkCollisions(PacMan pacman, HashSet<Ghost> ghosts) {
 
         if (System.currentTimeMillis() < invulnerableUntil) {
@@ -57,6 +56,7 @@ public class GameStateManager {
         }
     }
 
+    //incrementa score se colidiu pacman com comida
     public boolean eatFood(PacMan pacman, HashSet<Block> foods) {
         boolean eaten = pacman.eatFood(foods);
         if (eaten) {

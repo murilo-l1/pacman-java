@@ -2,9 +2,7 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Random;
 
-/**
- * Represents an enemy ghost that chases the player
- */
+//Fantasma, materializa Block e tem uma estratégia pré-definida de busca
 public class Ghost extends Block {
     private SearchStrategy searchStrategy;
 
@@ -25,7 +23,7 @@ public class Ghost extends Block {
 
     public void move(HashSet<Block> walls, PacMan pacman, int tileSize) {
 
-        // Só muda de direção se estiver alinhado na grid (evita travamento em viradas)
+        // Quando está no meio do tile, recebe qual posicao deve ir (do alg) e evita travamento em viradas
         if (x % tileSize == 0 && y % tileSize == 0) {
             char newDirection = searchStrategy.nextDirection(this, pacman, walls);
             updateDirection(newDirection);

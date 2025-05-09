@@ -34,7 +34,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     private int ghostsToRemoveThresold = 0;
 
     public Game() {
-        windowManager = new WindowManager(columns, rows, tileSize, this);
+        windowManager = new WindowManager(columns, rows, tileSize);
 
         setPreferredSize(windowManager.getPanelDimension());
         setBackground(Color.BLACK);
@@ -87,13 +87,14 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             boardLoader.resetPositions();
         }
 
-        // Move ghosts
+        // Move fantasmas
         for (Ghost ghost : ghosts) {
-            ghost.move (walls, pacman, tileSize);
+            ghost.move(walls, pacman, tileSize);
         }
 
-        // Eat food and update score
+        // Come comida e atualiza score
         gameStateManager.eatFood(pacman, foods);
+        //25%, 50% e 75% comido, remove fantasma
         removeGhostBasedOnFoods(foods, ghosts);
 
         if (gameStateManager.isLevelComplete(foods)) {
@@ -125,7 +126,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         gameLoop.start();
     }
 
-    // Game loop update
     @Override
     public void actionPerformed(ActionEvent e) {
         updateGame();
@@ -141,6 +141,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        //seleciona fase usando numeros
         if (!levelSelected) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_1 -> selectedLevel = LevelType.LEVEL_1;
@@ -166,7 +167,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-
+    //recebe inputs nas setas
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_R && gameStateManager.isGameOver()) {

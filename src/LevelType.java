@@ -1,3 +1,4 @@
+//level muda as vidas, estilo das paredes e layout do tabuleiro
 public enum LevelType {
 
     LEVEL_1(3, "assets/wall1.png", LevelBoards.board1),

@@ -3,33 +3,16 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Objects;
 
-/**
- * Handles rendering and window-related operations
- */
+//Gerencia a janela do jogo (tamanho, load das entidades)
 public class WindowManager {
     private final int columns;
     private final int rows;
     private final int tileSize;
-    private final JPanel gamePanel;
 
-    public WindowManager(int columns, int rows, int tileSize, JPanel gamePanel) {
+    public WindowManager(int columns, int rows, int tileSize) {
         this.columns = columns;
         this.rows = rows;
         this.tileSize = tileSize;
-        this.gamePanel = gamePanel;
-    }
-
-    public void setupWindow(String title) {
-        final JFrame window = new JFrame(title);
-        window.setSize(columns * tileSize, rows * tileSize);
-        window.setResizable(false);
-        window.setLocationRelativeTo(null);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        window.add(gamePanel);
-        window.pack();
-        gamePanel.requestFocus();
-        window.setVisible(true);
     }
 
     public void drawSelectionPanel(Graphics g) {
@@ -43,7 +26,7 @@ public class WindowManager {
         int centerX = (getWidth() - rectWidth) / 2;
         int upperCenterY = 80;
 
-        // Retângulo principal com borda decorada
+        //Retangulo de template
         g2d.setColor(new Color(30, 70, 30));
         g2d.fillRoundRect(centerX, upperCenterY, rectWidth, rectHeight, 20, 20);
 
@@ -53,7 +36,7 @@ public class WindowManager {
         int titleWidth = fm.stringWidth(title);
         g2d.drawString(title, centerX + (rectWidth - titleWidth) / 2, upperCenterY + 30);
 
-        // Opções horizontalmente alinhadas
+        // Opcoes de escolha
         String[] options = {"1 - Fácil", "2 - Médio", "3 - Difícil"};
         int spacing = rectWidth / options.length;
 
@@ -71,30 +54,30 @@ public class WindowManager {
     public void render(Graphics g, PacMan pacman, HashSet<Ghost> ghosts,
                        HashSet<Block> walls, HashSet<Block> foods,
                        GameStateManager gameState) {
-        // Clear the screen
+        // Limpa a tela
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, columns * tileSize, rows * tileSize);
 
-        // Draw walls
+        // Desenha parede
         for (Block wall : walls) {
             wall.draw(g);
         }
 
-        // Draw food
+        // Desenha comidas
         g.setColor(Color.WHITE);
         for (Block food : foods) {
             g.fillRect(food.getX(), food.getY(), food.getWidth(), food.getHeight());
         }
 
-        // Draw pacman
+        // Desenha o pacman
         pacman.draw(g);
 
-        // Draw ghosts
+        // Desenha fantasma
         for (Ghost ghost : ghosts) {
             ghost.draw(g);
         }
 
-        // Draw score and lives
+        // Desenha score e vidas
         drawHUD(g, gameState);
     }
 

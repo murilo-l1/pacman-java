@@ -1,8 +1,6 @@
 import java.awt.*;
 
-/**
- * Base class for all game entities (Pacman, Ghosts, Walls, Food)
- */
+// Classe base das entidades (wall, food, pacman e ghost)
 public class Block {
     protected int x;
     protected int y;
@@ -41,13 +39,14 @@ public class Block {
         this.x += this.velocityX;
         this.y += this.velocityY;
 
-        // This will be handled in the subclasses that need collision detection
+        // Caso haja colisão (tratada no filho, cancela o incremento de velocidade)
         this.x -= this.velocityX;
         this.y -= this.velocityY;
         this.direction = prevDirection;
         updateVelocity();
     }
 
+    //atualiza a velocidade no eixo baseado na direcao recebida (por input ou algoritmo)
     protected void updateVelocity() {
         if (this.direction == 'U') {
             this.velocityX = 0;

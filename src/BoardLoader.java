@@ -4,9 +4,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
 
-/**
- * Responsible for loading the game board and initializing game entities
- */
+//Carrega ou reseta o tabuleiro usando os assets com base no layout da fase
 public class BoardLoader {
     private final int tileSize;
     private Image wallImage;

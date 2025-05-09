@@ -1,9 +1,7 @@
 import java.awt.*;
 import java.util.HashSet;
 
-/**
- * Represents the player character in the game
- */
+//Materializa o pacman, move-o, checa colisoes com parede, comida e fantasma e trata caso sim.
 public class PacMan extends Block {
 
     // Ícones do pacman
@@ -12,8 +10,8 @@ public class PacMan extends Block {
     private final Image pacmanRight;
     private final Image pacmanLeft;
 
-    // Nova variável para armazenar a direção desejada
-    private char nextDirection = ' '; // Nenhuma direção por padrão
+    // Armazena para onde ele vai se mover
+    private char nextDirection = ' ';
 
     public PacMan(final int x, final int y, final int size, final int moveSpeed,
                   final Image up, final Image down, final Image right, final Image left) {
@@ -100,10 +98,10 @@ public class PacMan extends Block {
                     testX + width > wall.getX() &&
                     testY < wall.getY() + wall.getHeight() &&
                     testY + height > wall.getY()) {
-                return false; // bateu numa parede -> não pode mover
+                return false; // bateu numa parede ⇾ não pode mover
             }
         }
-        return true; // está livre -> pode mover
+        return true; // está livre ⇾ pode mover
     }
 
     public boolean collision(Block other) {
