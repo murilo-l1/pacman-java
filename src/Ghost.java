@@ -22,7 +22,6 @@ public class Ghost extends Block {
     }
 
     public void move(HashSet<Block> walls, PacMan pacman, int tileSize) {
-
         // Quando está no meio do tile, recebe qual posicao deve ir (do alg) e evita travamento em viradas
         if (x % tileSize == 0 && y % tileSize == 0) {
             char newDirection = searchStrategy.nextDirection(this, pacman, walls);

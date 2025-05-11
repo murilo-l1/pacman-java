@@ -1,6 +1,12 @@
 import javax.swing.*;
 
 public class App {
+
+    /*
+    * Murilo Lusvarghi Garcia
+    * Paulo Henrique Korovski Gavlak
+    * */
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             int columns = 19;

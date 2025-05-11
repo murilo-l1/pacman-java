@@ -43,7 +43,7 @@ public class SemiSmartStrategy implements SearchStrategy {
 
         // Decide: 50% guloso, 50% aleatorio
         if (random.nextDouble() < 0.5) {
-            // 💡 Escolhe a direção que minimiza a distância para o Pac-Man
+            // Escolhe a direção que minimiza a distância para o Pac-Man
             int[] bestMove = possibleMoves.getFirst();
             int bestDistance = distance(ghostX + bestMove[0], ghostY + bestMove[1], targetX, targetY);
 

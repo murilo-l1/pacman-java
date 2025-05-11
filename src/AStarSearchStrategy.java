@@ -110,24 +110,26 @@ public class AStarSearchStrategy implements SearchStrategy {
                     continue;
                 }
 
-                // Calcula o custo do caminho até este vizinho
-                double tentativeG = current.g + 1; // Custo para mover para um vizinho adjacente é 1
+                // Calcula o custo do caminho até este vizinho ("calculo real de peso")
+                double tentativeG = current.g + 1;
 
+                //cria um Node com base na posicao do vizinho (usando o array de int)
                 Node neighbor = allNodes.getOrDefault(neighborKey, new Node(newX, newY));
                 if (!allNodes.containsKey(neighborKey)) {
                     allNodes.put(neighborKey, neighbor);
                 }
 
+                //atualiza os valores do vizinho (sets no Node) se for um caminho melhor ou se ainda nao foi considerado na lista de à-visitar
                 if (!openSet.contains(neighbor) || tentativeG < neighbor.g) {
                     neighbor.parent = current;
                     neighbor.g = tentativeG;
                     neighbor.h = calculateHeuristic(newX, newY, goalX, goalY);
                     neighbor.f = neighbor.g + neighbor.h;
 
+                    //adiciona ou atualiza o vizinho nos não-visitados com o novo f calculado
                     if (!openSet.contains(neighbor)) {
                         openSet.add(neighbor);
                     } else {
-                        // Se o nó já está no openSet, atualiza o valor de F
                         openSet.remove(neighbor);
                         openSet.add(neighbor);
                     }
@@ -143,7 +145,6 @@ public class AStarSearchStrategy implements SearchStrategy {
     private double calculateHeuristic(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
-
 
     private List<Node> reconstructPath(Node goal) {
         List<Node> path = new ArrayList<>();
